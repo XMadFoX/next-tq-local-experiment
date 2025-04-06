@@ -1,5 +1,6 @@
 "use client";
 
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { QueryClient } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
@@ -52,6 +53,7 @@ export function TRPCProvider(
         persistOptions={persistOptions}
         onSuccess={() => console.log("Restored cache")}
       >
+        <ReactQueryDevtools initialIsOpen={false} />
         {props.children}
       </PersistQueryClientProvider>
     </trpc.Provider>

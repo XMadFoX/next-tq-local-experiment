@@ -33,6 +33,7 @@ export default function Home() {
             refetching: todos.isRefetching,
           })}
         </p>
+        <p>{JSON.stringify(todos)}</p>
         <button onClick={() => todos.refetch()}>refetch</button>
         <button
           onClick={() =>
