@@ -4,11 +4,20 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { QueryClient } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
-import { useState } from "react";
+import React, { Suspense, useState } from "react";
 import { makeQueryClient, persistOptions } from "./query-client";
 import { type AppRouter } from "@/server/routers/_app";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 export const trpc = createTRPCReact<AppRouter>();
+
+const ReactQueryDevtoolsProduction = React.lazy(() =>
+  import("@tanstack/react-query-devtools/build/modern/production.js").then(
+    (d) => ({
+      default: d.ReactQueryDevtools,
+    }),
+  ),
+);
+
 let clientQueryClientSingleton: QueryClient;
 function getQueryClient() {
   if (typeof window === "undefined") {
@@ -18,6 +27,7 @@ function getQueryClient() {
   // Browser: use singleton pattern to keep the same query client
   return (clientQueryClientSingleton ??= makeQueryClient());
 }
+
 function getUrl() {
   const base = (() => {
     if (typeof window !== "undefined") return "";
@@ -54,6 +64,9 @@ export function TRPCProvider(
         onSuccess={() => console.log("Restored cache")}
       >
         <ReactQueryDevtools initialIsOpen={false} />
+        <Suspense fallback={<div>Loading RN devtools...</div>}>
+          <ReactQueryDevtoolsProduction />
+        </Suspense>
         {props.children}
       </PersistQueryClientProvider>
     </trpc.Provider>
