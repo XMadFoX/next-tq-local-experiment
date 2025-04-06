@@ -19,9 +19,15 @@ const serwist = new Serwist({
   skipWaiting: true,
   clientsClaim: true,
   navigationPreload: true,
-  runtimeCaching: defaultCache,
+  runtimeCaching: [
+    {
+      matcher({ sameOrigin, url }) {
+        return sameOrigin && url.pathname.startsWith("/api/");
+      },
+      handler: new NetworkOnly(),
+    },
+    ...defaultCache,
+  ],
 });
-
-serwist.registerCapture(/^\/api\/.*/, new NetworkOnly());
 
 serwist.addEventListeners();
