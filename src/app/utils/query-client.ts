@@ -2,10 +2,7 @@ import {
   defaultShouldDehydrateQuery,
   QueryClient,
 } from "@tanstack/react-query";
-import {
-  persistQueryClient,
-  PersistQueryClientOptions,
-} from "@tanstack/react-query-persist-client";
+import { PersistQueryClientOptions } from "@tanstack/react-query-persist-client";
 import superjson from "superjson";
 import { createIDBPersister } from "./persister";
 
@@ -37,14 +34,6 @@ export function makeQueryClient() {
       },
     },
   });
-
-  if (typeof window === "undefined") {
-    return queryClient;
-  }
-
-  // const sessionStoragePersister = createSyncStoragePersister({ storage: window.sessionStorage })
-
-  persistQueryClient({ ...persistOptions, queryClient });
 
   return queryClient;
 }
