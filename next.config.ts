@@ -4,6 +4,7 @@ import type { NextConfig } from "next";
 const withSerwist = withSerwistInit({
   swSrc: "src/app/sw.ts",
   swDest: "public/sw.js",
+  dontCacheBustURLsMatching: /^api\/trpc/,
 });
 
 const nextConfig: NextConfig = {
