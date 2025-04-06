@@ -3,7 +3,7 @@ import {
   defaultShouldDehydrateQuery,
   QueryClient,
 } from "@tanstack/react-query";
-import { persistQueryClient } from "@tanstack/react-query-persist-client";
+import { persistQueryClientRestore } from "@tanstack/react-query-persist-client";
 import superjson from "superjson";
 export function makeQueryClient() {
   const queryClient = new QueryClient({
@@ -36,7 +36,7 @@ export function makeQueryClient() {
   });
   // const sessionStoragePersister = createSyncStoragePersister({ storage: window.sessionStorage })
 
-  persistQueryClient({
+  persistQueryClientRestore({
     queryClient,
     persister: localStoragePersister,
     maxAge: 1000 * 60 * 60 * 24, // 24 hours
