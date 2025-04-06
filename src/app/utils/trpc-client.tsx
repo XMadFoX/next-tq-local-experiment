@@ -1,12 +1,12 @@
 "use client";
 
 import type { QueryClient } from "@tanstack/react-query";
-import { QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
 import { useState } from "react";
-import { makeQueryClient } from "./query-client";
+import { makeQueryClient, persistOptions } from "./query-client";
 import { type AppRouter } from "@/server/routers/_app";
+import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 export const trpc = createTRPCReact<AppRouter>();
 let clientQueryClientSingleton: QueryClient;
 function getQueryClient() {
@@ -47,9 +47,12 @@ export function TRPCProvider(
   );
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
-      <QueryClientProvider client={queryClient}>
+      <PersistQueryClientProvider
+        client={queryClient}
+        persistOptions={persistOptions}
+      >
         {props.children}
-      </QueryClientProvider>
+      </PersistQueryClientProvider>
     </trpc.Provider>
   );
 }
