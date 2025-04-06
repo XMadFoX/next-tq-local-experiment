@@ -50,6 +50,7 @@ export function TRPCProvider(
       <PersistQueryClientProvider
         client={queryClient}
         persistOptions={persistOptions}
+        onSuccess={() => console.log("Restored cache")}
       >
         {props.children}
       </PersistQueryClientProvider>

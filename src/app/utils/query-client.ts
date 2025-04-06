@@ -1,4 +1,3 @@
-import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
 import {
   defaultShouldDehydrateQuery,
   QueryClient,
@@ -8,13 +7,12 @@ import {
   PersistQueryClientOptions,
 } from "@tanstack/react-query-persist-client";
 import superjson from "superjson";
+import { createIDBPersister } from "./persister";
 
-export const localStoragePersister = createSyncStoragePersister({
-  storage: typeof window !== "undefined" ? window.localStorage : undefined,
-});
+const idbStoragePersister = createIDBPersister();
 
 export const persistOptions: Omit<PersistQueryClientOptions, "queryClient"> = {
-  persister: localStoragePersister,
+  persister: idbStoragePersister,
   maxAge: 1000 * 60 * 60 * 24, // 24 hours
 };
 
