@@ -3,7 +3,6 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 import { PersistQueryClientOptions } from "@tanstack/react-query-persist-client";
-import superjson from "superjson";
 import { createIDBPersister } from "./persister";
 
 const idbStoragePersister = createIDBPersister();
@@ -28,9 +27,6 @@ export function makeQueryClient() {
         shouldDehydrateQuery: (query) =>
           defaultShouldDehydrateQuery(query) ||
           query.state.status === "pending",
-      },
-      hydrate: {
-        deserializeData: superjson.deserialize,
       },
     },
   });
