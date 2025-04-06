@@ -9,7 +9,11 @@ export function makeQueryClient() {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        staleTime: 30 * 1000,
+        networkMode: "offlineFirst",
+        gcTime: 1000 * 60 * 60 * 24, // 24 hours
+        staleTime: 1000 * 60 * 5, // 5 minutes
+        enabled: navigator.onLine,
+        retry: false,
       },
       dehydrate: {
         // serializeData: superjson.serialize,
@@ -35,6 +39,7 @@ export function makeQueryClient() {
   persistQueryClient({
     queryClient,
     persister: localStoragePersister,
+    maxAge: 1000 * 60 * 60 * 24, // 24 hours
   });
 
   return queryClient;
