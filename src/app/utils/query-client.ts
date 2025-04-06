@@ -23,8 +23,6 @@ export function makeQueryClient() {
         networkMode: "offlineFirst",
         gcTime: 1000 * 60 * 60 * 24, // 24 hours
         staleTime: 1000 * 60 * 5, // 5 minutes
-        enabled: navigator.onLine,
-        retry: false,
       },
       dehydrate: {
         // serializeData: superjson.serialize,
