@@ -43,7 +43,7 @@ export const appRouter = router({
       }),
     )
     .query(async (opts) => {
-      await new Promise((resolve) => setTimeout(resolve, 15000));
+      await new Promise((resolve) => setTimeout(resolve, 1500));
 
       return {
         greeting: `hello ${opts.input.text}`,

@@ -5,15 +5,46 @@ import { trpc } from "./utils/trpc";
 
 export default function Home() {
   const hello = trpc.hello.useQuery({ text: "client" });
-  if (!hello.data) {
-    return <div>Loading...</div>;
-  }
+  const todos = trpc.todos.list.useQuery();
+  const utils = trpc.useUtils();
+  const createTodo = trpc.todos.create.useMutation({
+    onSuccess: () => {
+      utils.todos.list.invalidate();
+    },
+    onMutate: (vars) => {
+      utils.todos.list.setData(undefined, (prev) => {
+        if (!prev) return prev;
+        return [...prev, { ...vars }];
+      });
+    },
+  });
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
         <h1>Response</h1>
-        <p>{JSON.stringify(hello.data)}</p>
+        <p>{JSON.stringify(hello?.data)}</p>
+        {JSON.stringify(todos?.data, null, "\t")}
+        <p>
+          {JSON.stringify({
+            error: todos.isError,
+            loading: todos.isLoading,
+            pending: todos.isPending,
+            refetching: todos.isRefetching,
+          })}
+        </p>
+        <button onClick={() => todos.refetch()}>refetch</button>
+        <button
+          onClick={() =>
+            createTodo.mutate({
+              id: 4,
+              title: "Buy another milk",
+              completed: false,
+            })
+          }
+        >
+          push
+        </button>
         <Image
           className="dark:invert"
           src="/next.svg"
