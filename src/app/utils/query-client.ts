@@ -22,6 +22,11 @@ export function makeQueryClient() {
       },
     },
   });
+
+  if (typeof window === "undefined") {
+    return queryClient;
+  }
+
   const localStoragePersister = createSyncStoragePersister({
     storage: window.localStorage,
   });

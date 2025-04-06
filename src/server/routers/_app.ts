@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { procedure, router } from "../trpc";
 
-let todos = [
+const todos = [
   { id: 1, title: "Buy milk", completed: false },
   { id: 2, title: "Buy bread", completed: false },
   {
